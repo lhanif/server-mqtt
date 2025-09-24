@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', {
+    const client = mqtt.connect('wss://broker.hivemq.com:1883/mqtt', {
       clientId: 'vercel-' + Math.random().toString(16).substr(2, 8),
       clean: true,
       reconnectPeriod: 0

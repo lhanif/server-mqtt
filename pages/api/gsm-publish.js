@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     // Bentuk URL penuh, contoh:
     // wss://broker.hivemq.com:8884/mqtt
-    const fullUrl = `${scheme}://${brokerUrl}:${brokerPort}/mqtt`;
+    const fullUrl = `wss://broker.hivemq.com:8884/mqtt`;
 
     const client = mqtt.connect(fullUrl);
 

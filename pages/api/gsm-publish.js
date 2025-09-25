@@ -12,24 +12,37 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { brokerUrl, brokerPort, topic } = getConfig();
-    const client = mqtt.connect(`${brokerUrl}:${brokerPort}`);
+    // Ambil konfigurasi dinamis
+    const { brokerUrl, brokerPort, topic, protocol } = getConfig();
+    // Pastikan protocol default ke wss agar jalan di Vercel
+    const scheme = protocol || "wss";
+
+    // Bentuk URL penuh, contoh:
+    // wss://broker.hivemq.com:8884/mqtt
+    const fullUrl = `${scheme}://${brokerUrl}:${brokerPort}/mqtt`;
+
+    const client = mqtt.connect(fullUrl);
 
     client.on("connect", () => {
+      console.log(`Connected to MQTT Broker: ${fullUrl}`);
       client.publish(topic, message, () => {
+        console.log(`Published to ${topic}: ${message}`);
         client.end();
       });
+    });
+
+    client.on("error", (err) => {
+      console.error("MQTT Connection Error:", err);
     });
 
     res.status(200).json({
       status: "published",
       topic,
       message,
-      broker: `${brokerUrl}:${brokerPort}`
+      broker: fullUrl
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to publish" });
   }
 }
-

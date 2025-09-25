@@ -1,14 +1,14 @@
-// config.js
-let mqttConfig = {
-  brokerUrl: "mqtt://broker.hivemq.com",
-  brokerPort: "1883",
-  topic: "gsm/data",
+let config = {
+  brokerUrl: "broker.hivemq.com",
+  brokerPort: "8884",
+  protocol: "wss", // default wss untuk Vercel
+  topic: "nipi/stm32/bisa"
 };
 
 export function getConfig() {
-  return mqttConfig;
+  return config;
 }
 
 export function setConfig(newConfig) {
-  mqttConfig = { ...mqttConfig, ...newConfig };
+  config = { ...config, ...newConfig };
 }

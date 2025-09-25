@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MQTT HTTP Bridge</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 400px; margin: auto; }
+    input, button { width: 100%; padding: 8px; margin: 8px 0; }
+    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    button:hover { background: #45a049; }
+    #status { margin-top: 10px; color: #333; }
+  </style>
+</head>
+<body>
+  <h2>MQTT Publisher</h2>
+
+  <label>Broker</label>
+  <input id="broker" placeholder="broker.hivemq.com" value="broker.hivemq.com">
+
+  <label>Port (WSS)</label>
+  <input id="port" placeholder="8884" value="8884">
+
+  <label>Topic</label>
+  <input id="topic" placeholder="nipi/stm32/bisa" value="nipi/stm32/bisa">
+
+  <label>Message</label>
+  <input id="message" placeholder="Hello MQTT">
+
+  <button onclick="sendData()">Publish</button>
+
+  <div id="status"></div>
+
+  <script>
+    async function sendData() {
+      const broker = document.getElementById("broker").value;
+      const port = document.getElementById("port").value;
+      const topic = document.getElementById("topic").value;
+      const message = document.getElementById("message").value;
+
+      document.getElementById("status").innerText = "Sending...";
+
+      try {
+        const res = await fetch('/api/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ broker, port, topic, message })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById("status").innerText =
+            "✅ Published to " + data.topic;
+        } else {
+          document.getElementById("status").innerText =
+            "❌ Error: " + data.error;
+        }
+      } catch (err) {
+        document.getElementById("status").innerText = "❌ Failed: " + err;
+      }
+    }
+  </script>
+</body>
+</html>

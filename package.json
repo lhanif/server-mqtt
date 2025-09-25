@@ -2,11 +2,17 @@
   "name": "http-mqtt-bridge",
   "version": "1.0.0",
   "dependencies": {
-    "mqtt": "^5.0.0"
+    "mqtt": "^5.0.0",
+    "next": "^14.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "keywords": [],
   "author": "",
